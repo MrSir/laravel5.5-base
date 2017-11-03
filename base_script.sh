@@ -16,7 +16,7 @@ apt-get update
 apt-get -y install vim curl nginx sqlite
 
 # install php and enable it should be v7.0#
-apt-get -y install php7.1 php-mcrypt php-curl php-gd php-imap php-xdebug php-xml php-mbstring php-zip php-soap php7.0-bcmath
+apt-get -y install php7.1 php7.1-fpm php-mcrypt php-curl php-gd php-imap php-xdebug php-xml php-mbstring php-zip php-soap php7.1-bcmath
 phpenmod mcrypt
 phpenmod gd
 phpenmod imap
