@@ -30,7 +30,7 @@ sed -i "s/post_max_size = 8M/post_max_size = 128M/" /etc/php/7.1/cli/php.ini
 service php7.1-fpm restart
 service nginx restart
 
-apt-get -y instll redis-server
+apt-get -y install redis-server
 
 echo "xdebug.remote_enable = 1" >> /etc/php/7.1/mods-available/xdebug.ini
 echo "xdebug.remote_connect_back = 1" >> /etc/php/7.1/mods-available/xdebug.ini
