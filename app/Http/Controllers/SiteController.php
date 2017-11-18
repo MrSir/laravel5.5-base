@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Site;
+use App\Http\Requests\Site\Index as RequestIndex;
+use App\Models\Site;
+use App\Pipelines\Site\Index;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -10,11 +13,23 @@ class SiteController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param RequestIndex $request
+     *
+     * @return JsonResponse
      */
-    public function index()
+    public function index(RequestIndex $request)
     {
-        //
+        // instantiate the pipeline
+        $pipeline = new Index();
+        $pipeline->fill($request);
+
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 
     /**

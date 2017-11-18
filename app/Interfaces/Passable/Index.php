@@ -15,8 +15,6 @@ interface Index extends Base
 
     /**
      * @param $query
-     *
-     * @return mixed
      */
     public function setQuery($query);
 
@@ -27,8 +25,6 @@ interface Index extends Base
 
     /**
      * @param $perPage
-     *
-     * @return mixed
      */
     public function setPerPage($perPage);
 
@@ -39,8 +35,6 @@ interface Index extends Base
 
     /**
      * @param $page
-     *
-     * @return mixed
      */
     public function setPage($page);
 
@@ -51,8 +45,6 @@ interface Index extends Base
 
     /**
      * @param $results
-     *
-     * @return mixed
      */
     public function setResults($results);
 
@@ -63,8 +55,6 @@ interface Index extends Base
 
     /**
      * @param $totals
-     *
-     * @return mixed
      */
     public function setTotals($totals);
 }

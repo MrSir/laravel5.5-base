@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Pipes\Index;
+
+use App\Interfaces\Passable\Index;
+use App\Pipes\Pipe;
+use Closure;
+use Exception;
+use Throwable;
+
+/**
+ * Class Paginate
+ * @package App\Pipes\Index
+ */
+abstract class Paginate extends Pipe
+{
+    /**
+     * @param Index   $passable
+     * @param Closure $next
+     *
+     * @return mixed
+     * @throws Exception
+     */
+    public function handle(Index &$passable, Closure $next)
+    {
+        try {
+            $request = $passable->getRequest();
+            $query = $passable->getQuery();
+            $total = $query->count();
+            $perPage = 25;
+            $page = 1;
+            if ($request->has('perPage')) {
+                $perPage = $request->get('perPage');
+            }
+            if ($request->has('page')) {
+                $page = $request->get('page');
+            }
+            // add in the paginated filter
+            $query->take($perPage)
+                ->skip(($page - 1) * $perPage);
+            $passable->setPerPage($perPage);
+            $passable->setPage($page);
+            $passable->setResults($query->get());
+            $passable->setTotals($total);
+        } catch (Throwable $e) {
+            $exceptionType = $this->getExceptionType();
+            throw new $exceptionType($e);
+        }
+
+        return $next($passable);
+    }
+}

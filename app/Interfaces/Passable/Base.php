@@ -15,8 +15,6 @@ interface Base
 
     /**
      * @param $request
-     *
-     * @return mixed
      */
     public function setRequest($request);
 
@@ -27,8 +25,6 @@ interface Base
 
     /**
      * @param $response
-     *
-     * @return mixed
      */
     public function setResponse($response);
 }

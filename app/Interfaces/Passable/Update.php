@@ -10,8 +10,6 @@ interface Update extends Base
 {
     /**
      * @param $model
-     *
-     * @return mixed
      */
     public function setModel($model);
 
