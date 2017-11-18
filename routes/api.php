@@ -16,3 +16,45 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// The Site resource routes
+Route::resource(
+    '/site',
+    'SiteController',
+    [
+        'only' => [
+            'index',
+            'store',
+            'show',
+            'update',
+            'destroy'
+        ]
+    ]
+);
+
+// The Page resource routes
+Route::resource(
+    '/page',
+    'PageController',
+    [
+        'only' => [
+            'index',
+            'store',
+            'update',
+            'destroy'
+        ]
+    ]
+);
+
+// The Element resource routes
+Route::resource(
+    '/element',
+    'ElementController',
+    [
+        'only' => [
+            'store',
+            'update',
+            'destroy'
+        ]
+    ]
+);
