@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('register');
 });
 
 Route::get ( '/redirect/{service}', 'SocialiteAuthController@redirect' );
