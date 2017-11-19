@@ -5,6 +5,10 @@ namespace App\Http\Requests\Page;
 use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class Store
+ * @package App\Http\Requests\Page
+ */
 class Store extends FormRequest
 {
     /**

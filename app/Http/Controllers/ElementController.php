@@ -2,12 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Element;
 use App\Http\Requests\Element\Store as RequestStore;
+use App\Http\Requests\Element\Update as RequestUpdate;
+use App\Http\Requests\Element\Destroy as RequestDestroy;
+use App\Models\Element;
 use App\Pipelines\Element\Store;
+use App\Pipelines\Element\Update;
+use App\Pipelines\Element\Destroy;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
+/**
+ * Class ElementController
+ * @package App\Http\Controllers
+ */
 class ElementController extends Controller
 {
     /**
@@ -32,51 +39,52 @@ class ElementController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Element $element
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Element $element)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Element $element
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Element $element)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Element             $element
+     * @param RequestUpdate $request
+     * @param Element       $element
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, Element $element)
+    public function update(RequestUpdate $request, Element $element)
     {
-        //
+        // instantiate the pipe
+        $pipeline = new Update();
+        $pipeline->fill(
+            $request,
+            $element
+        );
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Element $element
+     * @param RequestDestroy $request
+     * @param Element        $element
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy(Element $element)
+    public function destroy(RequestDestroy $request, Element $element)
     {
-        //
+        // instantiate the pipeline
+        $pipeline = new Destroy();
+        $pipeline->fill(
+            $request,
+            $element
+        );
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 }

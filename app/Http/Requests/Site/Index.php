@@ -4,6 +4,10 @@ namespace App\Http\Requests\Site;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * Class Index
+ * @package App\Http\Requests\Site
+ */
 class Index extends FormRequest
 {
     /**

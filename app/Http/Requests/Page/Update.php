@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Element;
+namespace App\Http\Requests\Page;
 
-use App\Models\Element;
+use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class Store
- * @package App\Http\Requests\Element
+ * Class Update
+ * @package App\Http\Requests\Page
  */
-class Store extends FormRequest
+class Update extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +17,10 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return policy(Element::class)->create($this->user());
+        return policy(Page::class)->update(
+            $this->user(),
+            $this->route('page')
+        );
     }
 
     /**

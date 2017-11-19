@@ -6,10 +6,10 @@ use App\Models\Element;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * Class Store
+ * Class Update
  * @package App\Http\Requests\Element
  */
-class Store extends FormRequest
+class Update extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,7 +17,10 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return policy(Element::class)->create($this->user());
+        return policy(Element::class)->update(
+            $this->user(),
+            $this->route('element')
+        );
     }
 
     /**

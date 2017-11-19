@@ -4,12 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Site\Index as RequestIndex;
 use App\Http\Requests\Site\Store as RequestStore;
+use App\Http\Requests\Site\Update as RequestUpdate;
+use App\Http\Requests\Site\Destroy as RequestDestroy;
 use App\Models\Site;
 use App\Pipelines\Site\Index;
 use App\Pipelines\Site\Store;
+use App\Pipelines\Site\Update;
+use App\Pipelines\Site\Destroy;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
+/**
+ * Class SiteController
+ * @package App\Http\Controllers
+ */
 class SiteController extends Controller
 {
     /**
@@ -44,10 +51,10 @@ class SiteController extends Controller
     public function store(RequestStore $request)
     {
         // instantiate the pipe
-        $pipe = new Store();
-        $pipe->fill($request);
+        $pipeline = new Store();
+        $pipeline->fill($request);
         // flush the pipe
-        $result = $pipe->flush();
+        $result = $pipeline->flush();
 
         // handle the response
         return response()
@@ -58,49 +65,64 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Site $site
+     * @param  Site $site
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function show(Site $site)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Site $site
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Site $site)
-    {
-        //
+        return response()
+            ->json($site)
+            ->setStatusCode(200);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \App\Site                $site
+     * @param RequestUpdate $request
+     * @param Site          $site
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function update(Request $request, Site $site)
+    public function update(RequestUpdate $request, Site $site)
     {
-        //
+        // instantiate the pipeline
+        $pipeline = new Update();
+        $pipeline->fill(
+            $request,
+            $site
+        );
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Site $site
+     * @param RequestDestroy $request
+     * @param Site           $site
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy(Site $site)
+    public function destroy(RequestDestroy $request, Site $site)
     {
-        //
+        // instantiate the pipeline
+        $pipeline = new Destroy();
+        $pipeline->fill(
+            $request,
+            $site
+        );
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 }
