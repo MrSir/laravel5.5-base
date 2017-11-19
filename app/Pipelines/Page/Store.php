@@ -2,18 +2,16 @@
 
 namespace App\Pipelines\Page;
 
-use App\Passables\Page\Index as PassableIndex;
+use App\Passables\Page\Store as PassableStore;
 use App\Pipelines\Pipeline;
-use App\Pipes\Page\Index\Format;
-use App\Pipes\Page\Index\Paginate;
-use App\Pipes\Page\Index\Search;
-use App\Pipes\Page\Index\Sort;
+use App\Pipes\Page\Store\Create;
+use App\Pipes\Page\Store\Format;
 
 /**
  * Class Index
- * @package App\Pipelines\Account
+ * @package App\Pipelines\Category
  */
-class Index extends Pipeline
+class Store extends Pipeline
 {
     /**
      * This is the fill function, it initializes the pipeline
@@ -24,12 +22,7 @@ class Index extends Pipeline
      */
     public function fill($request)
     {
-        // add the default order sort
-        if (!$request->has('orderColumn')) {
-            $request['orderColumn'] = 'order';
-        }
-
-        $passable = new PassableIndex();
+        $passable = new PassableStore();
         $passable->setRequest($request);
         $this->setPassable($passable);
 
@@ -38,21 +31,20 @@ class Index extends Pipeline
 
     /**
      * This is the flush function, it executes the entire pipe
-     * @return PassableIndex
+     * @return PassableStore
      */
     public function flush()
     {
         return $this->send($this->getPassable())
             ->through(
                 [
-                    Search::class,
-                    Sort::class,
-                    Paginate::class,
+                    //TODO add translate
+                    Create::class,
                     Format::class,
                 ]
             )
             ->then(
-                function (PassableIndex $passable) {
+                function (PassableStore $passable) {
                     return $passable->getResponse();
                 }
             );

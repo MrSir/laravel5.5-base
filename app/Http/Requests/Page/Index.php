@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Page;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Response;
 
 class Index extends FormRequest
 {
@@ -23,7 +24,35 @@ class Index extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'siteId' => 'required|integer|exists:sites,id',
+            'createdAtFrom' => 'date',
+            'createdAtTo' => 'date',
+            'perPage' => 'integer',
+            'page' => 'integer',
+            'orderColumn' => 'string',
+            'orderDirection' => 'string',
         ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     * @return array
+     */
+    public function messages()
+    {
+        return parent::messages();
+    }
+
+    /**
+     * @param array $errors
+     *
+     * @return mixed
+     */
+    public function response(array $errors)
+    {
+        return Response::json(
+            $errors,
+            400
+        );
     }
 }

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Page\Index as RequestIndex;
+use App\Http\Requests\Page\Store as RequestStore;
 use App\Models\Page;
 use App\Pipelines\Page\Index;
+use App\Pipelines\Page\Store;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -33,24 +35,24 @@ class PageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param RequestStore $request
      *
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(RequestStore $request)
     {
-        //
+        // instantiate the pipe
+        $pipe = new Store();
+        $pipe->fill($request);
+        // flush the pipe
+        $result = $pipe->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 
     /**

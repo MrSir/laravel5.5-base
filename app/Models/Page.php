@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Class Page
@@ -31,7 +33,7 @@ class Page extends Model
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -43,4 +45,22 @@ class Page extends Model
         'name' => 'string',
         'url_slug' => 'string',
     ];
+
+    /**
+     * This function returns the Site object this Page belongs to
+     * @return BelongsTo
+     */
+    public function site()
+    {
+        return $this->belongsTo(Site::class);
+    }
+
+    /**
+     * This function returns a collection of Element objects that belong to this Page
+     * @return HasMany
+     */
+    public function elements()
+    {
+        return $this->hasMany(Element::class);
+    }
 }

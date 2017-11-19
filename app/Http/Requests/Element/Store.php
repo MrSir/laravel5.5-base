@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Site;
+namespace App\Http\Requests\Element;
 
+use App\Models\Element;
 use Illuminate\Foundation\Http\FormRequest;
 
-class Index extends FormRequest
+class Store extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,8 +13,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return true;
-        //TODO
+        return policy(Element::class)->create($this->user());
     }
 
     /**
@@ -24,13 +24,6 @@ class Index extends FormRequest
     {
         return [
             //TODO
-
-            'createdAtFrom' => 'date',
-            'createdAtTo' => 'date',
-            'perPage' => 'integer',
-            'page' => 'integer',
-            'orderColumn' => 'string',
-            'orderDirection' => 'string',
         ];
     }
 }

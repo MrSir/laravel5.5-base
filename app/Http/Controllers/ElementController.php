@@ -3,45 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Element;
+use App\Http\Requests\Element\Store as RequestStore;
+use App\Pipelines\Element\Store;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ElementController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param RequestStore $request
+     *
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(RequestStore $request)
     {
-        //
+        // instantiate the pipe
+        $pipe = new Store();
+        $pipe->fill($request);
+        // flush the pipe
+        $result = $pipe->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode($result['code']);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Element  $element
+     * @param  \App\Element $element
+     *
      * @return \Illuminate\Http\Response
      */
     public function show(Element $element)
@@ -52,7 +46,8 @@ class ElementController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Element  $element
+     * @param  \App\Element $element
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit(Element $element)
@@ -63,8 +58,9 @@ class ElementController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Element  $element
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Element             $element
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Element $element)
@@ -75,7 +71,8 @@ class ElementController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Element  $element
+     * @param  \App\Element $element
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy(Element $element)

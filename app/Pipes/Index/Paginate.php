@@ -43,8 +43,9 @@ abstract class Paginate extends Pipe
             $passable->setResults($query->get());
             $passable->setTotals($total);
         } catch (Throwable $e) {
-            $exceptionType = $this->getExceptionType();
-            throw new $exceptionType($e);
+
+            //$exceptionType = $this->getExceptionType();
+            //throw new $exceptionType($e);
         }
 
         return $next($passable);
