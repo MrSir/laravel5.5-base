@@ -5,6 +5,8 @@ namespace App\Pipelines\Page;
 use App\Passables\Page\Destroy as PassableDestroy;
 use App\Pipelines\Pipeline;
 use App\Pipes\Page\Destroy\Delete;
+use App\Pipes\Page\Destroy\DeleteAttributes;
+use App\Pipes\Page\Destroy\DeleteElements;
 use App\Pipes\Page\Destroy\Format;
 
 /**
@@ -40,6 +42,8 @@ class Destroy extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
+                    DeleteAttributes::class,
+                    DeleteElements::class,
                     Delete::class,
                     Format::class,
                 ]
