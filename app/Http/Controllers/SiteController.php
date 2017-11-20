@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Site\Destroy as RequestDestroy;
 use App\Http\Requests\Site\Index as RequestIndex;
 use App\Http\Requests\Site\Store as RequestStore;
 use App\Http\Requests\Site\Update as RequestUpdate;
-use App\Http\Requests\Site\Destroy as RequestDestroy;
 use App\Models\Site;
+use App\Pipelines\Site\Destroy;
 use App\Pipelines\Site\Index;
 use App\Pipelines\Site\Store;
 use App\Pipelines\Site\Update;
-use App\Pipelines\Site\Destroy;
+use App\Traits\Caching;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class SiteController
@@ -19,6 +21,8 @@ use Illuminate\Http\JsonResponse;
  */
 class SiteController extends Controller
 {
+    use Caching;
+
     /**
      * Display a listing of the resource.
      *
@@ -28,12 +32,28 @@ class SiteController extends Controller
      */
     public function index(RequestIndex $request)
     {
-        // instantiate the pipeline
-        $pipeline = new Index();
-        $pipeline->fill($request);
+        // check if we have a cached result and send it back instead
+        $result = $this->checkCache(
+            'site.index',
+            $request->all()
+        );
 
-        // flush the pipe
-        $result = $pipeline->flush();
+        // if no cached object found
+        if (is_null($result)) {
+            // instantiate the pipeline
+            $pipeline = new Index();
+            $pipeline->fill($request);
+
+            // flush the pipe
+            $result = $pipeline->flush();
+
+            // cache the result
+            $this->addToCache(
+                'site.index',
+                $request->all(),
+                $result
+            );
+        }
 
         // handle the response
         return response()
@@ -56,6 +76,8 @@ class SiteController extends Controller
         // flush the pipe
         $result = $pipeline->flush();
 
+        Cache::forget('site.index');
+
         // handle the response
         return response()
             ->json($result)
@@ -65,14 +87,31 @@ class SiteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Site $site
+     * @param  int $id
      *
      * @return JsonResponse
      */
-    public function show(Site $site)
+    public function show(int $id)
     {
+        // check if we have a cached result and send it back instead
+        $result = $this->checkCache(
+            'site.show',
+            ['id' => $id]
+        );
+
+        if (is_null($result)) {
+            $result = Site::find($id);
+
+            // cache the result
+            $this->addToCache(
+                'site.show',
+                ['id' => $id],
+                $result
+            );
+        }
+
         return response()
-            ->json($site)
+            ->json($result)
             ->setStatusCode(200);
     }
 
@@ -94,6 +133,8 @@ class SiteController extends Controller
         );
         // flush the pipe
         $result = $pipeline->flush();
+
+        Cache::forget('site.index');
 
         // handle the response
         return response()
@@ -119,6 +160,8 @@ class SiteController extends Controller
         );
         // flush the pipe
         $result = $pipeline->flush();
+
+        Cache::forget('site.index');
 
         // handle the response
         return response()

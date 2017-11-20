@@ -13,10 +13,10 @@ add-apt-repository -y ppa:ondrej/php
 apt-get update
 
 # basic tools #
-apt-get -y install vim curl nginx sqlite
+apt-get -y install vim curl nginx sqlite memcached
 
 # install php and enable it should be v7.0#
-apt-get -y install php7.1 php7.1-fpm php-mcrypt php-curl php-gd php-imap php-xdebug php-xml php-mbstring php-zip php-soap php7.1-bcmath
+apt-get -y install php7.1 php7.1-fpm php-mcrypt php-curl php-gd php-imap php-xdebug php-xml php-mbstring php-zip php-soap php7.1-bcmath php-memcached
 phpenmod mcrypt
 phpenmod gd
 phpenmod imap
@@ -29,6 +29,7 @@ sed -i "s/post_max_size = 8M/post_max_size = 128M/" /etc/php/7.1/cli/php.ini
 
 service php7.1-fpm restart
 service nginx restart
+service memcached restart
 
 apt-get -y install redis-server
 

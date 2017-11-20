@@ -13,7 +13,9 @@ use App\Pipelines\Page\Store;
 use App\Pipelines\Page\Update;
 use App\Pipelines\Page\Destroy;
 use App\Pipelines\Page\Render;
+use App\Traits\Caching;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class PageController
@@ -21,6 +23,8 @@ use Illuminate\Http\JsonResponse;
  */
 class PageController extends Controller
 {
+    use Caching;
+
     /**
      * Display a listing of the resource.
      *
@@ -30,12 +34,28 @@ class PageController extends Controller
      */
     public function index(RequestIndex $request)
     {
-        // instantiate the pipeline
-        $pipeline = new Index();
-        $pipeline->fill($request);
+        // check if we have a cached result and send it back instead
+        $result = $this->checkCache(
+            'page.index',
+            $request->all()
+        );
 
-        // flush the pipe
-        $result = $pipeline->flush();
+        // if no cached object found
+        if (is_null($result)) {
+            // instantiate the pipeline
+            $pipeline = new Index();
+            $pipeline->fill($request);
+
+            // flush the pipe
+            $result = $pipeline->flush();
+
+            // cache the result
+            $this->addToCache(
+                'page.index',
+                $request->all(),
+                $result
+            );
+        }
 
         // handle the response
         return response()
@@ -57,6 +77,8 @@ class PageController extends Controller
         $pipe->fill($request);
         // flush the pipe
         $result = $pipe->flush();
+
+        Cache::forget('page.index');
 
         // handle the response
         return response()
@@ -83,6 +105,8 @@ class PageController extends Controller
         // flush the pipe
         $result = $pipeline->flush();
 
+        Cache::forget('page.index');
+
         // handle the response
         return response()
             ->json($result)
@@ -108,6 +132,8 @@ class PageController extends Controller
         // flush the pipe
         $result = $pipeline->flush();
 
+        Cache::forget('page.index');
+
         // handle the response
         return response()
             ->json($result)
@@ -123,14 +149,33 @@ class PageController extends Controller
      */
     public function render(RequestRender $request)
     {
-        // instantiate the pipeline
-        $pipeline = new Render();
-        $pipeline->fill($request);
+        // check if we have a cached result and send it back instead
+        $result = $this->checkCache(
+            'page.render',
+            $request->all()
+        );
 
-        // flush the pipe
-        $result = $pipeline->flush();
+        // if no cached object found
+        if (is_null($result)) {
+            // instantiate the pipeline
+            $pipeline = new Render();
+            $pipeline->fill($request);
 
-        return response($result['view'])
-            ->setStatusCode($result['code']);
+            // flush the pipe
+            $result = $pipeline->flush();
+
+            // cache the result
+            $this->addToCache(
+                'page.render',
+                $request->all(),
+                $result['view']->render()
+            );
+
+            return response($result['view'])
+                ->setStatusCode($result['code']);
+        }
+
+        return response($result)
+            ->setStatusCode(200);
     }
 }
