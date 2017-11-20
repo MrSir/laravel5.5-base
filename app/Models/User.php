@@ -17,7 +17,7 @@ class User extends Authenticatable
     /**
      * @var string
      */
-    protected $table = 'tokens';
+    protected $table = 'users';
 
     /**
      * @var array

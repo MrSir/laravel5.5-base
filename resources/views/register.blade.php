@@ -5,7 +5,7 @@
     <div class="card">
         <h4 class="card-header">Register</h4>
         <div class="card-body">
-            <form>
+            <form method="POST" action="/api/user">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" class="form-control" id="name" placeholder="e.g. John Smith">
