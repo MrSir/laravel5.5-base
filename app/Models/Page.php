@@ -65,11 +65,20 @@ class Page extends Model
     }
 
     /**
-     * This function computes the url for he page
+     * This function computes the url for the page
+     *
+     * @param bool $urlEncode
+     *
      * @return string
      */
-    public function computeUrl()
+    public function computeUrl($urlEncode = false)
     {
-        return urlencode("http://{$this->site->url}/{$this->url_slug}");
+        $url = "http://{$this->site->url}/{$this->url_slug}";
+
+        if ($urlEncode) {
+            $url = urlencode($url);
+        }
+
+        return $url;
     }
 }
