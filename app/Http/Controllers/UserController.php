@@ -21,6 +21,9 @@ class UserController extends Controller
      */
     public function store(RequestStore $request)
     {
+        // hash the password
+        $request['password'] = bcrypt($request->get('password'));
+
         // instantiate the pipe
         $pipeline = new Store();
         $pipeline->fill($request);

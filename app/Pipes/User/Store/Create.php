@@ -3,6 +3,7 @@
 namespace App\Pipes\User\Store;
 
 use App\Exceptions\User\Store\Create as ExceptionCreate;
+use App\Models\Token;
 use App\Models\User;
 use App\Passables\User\Store;
 use App\Pipes\Store\Create as StoreCreate;
@@ -41,6 +42,35 @@ class Create extends StoreCreate
             $user = $passable->getModel();
             $user->registered_at = Carbon::now();
             $user->save();
+
+            // add the token
+            $tokenValue = uniqid('token_', true);
+            $service = 'app-token';
+
+            $request = $passable->getRequest();
+
+            if ($request->has('token')) {
+                $tokenValue = $request->get('token');
+            }
+
+            if ($request->has('service')) {
+                $service = $request->get('service');
+            }
+
+            $token = Token::make(
+                [
+                    'token' => $tokenValue,
+                    'type' => $service,
+                ]
+            );
+
+            if ($request->has('expiresIn')) {
+                $token->expires_at = Carbon::now()
+                    ->addSeconds($request->get('expiresIn'));
+            }
+
+            $user->tokens()
+                ->save($token);
         } catch (Throwable $e) {
             $exceptionType = $this->getExceptionType();
             throw new $exceptionType($e);

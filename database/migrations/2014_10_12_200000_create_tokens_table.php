@@ -18,6 +18,7 @@ class CreateTokensTable extends Migration
             $table->unsignedInteger('user_id')->index('tokens_user_id_foreign');
             $table->string('type');
             $table->longText('token');
+            $table->timestamp('expires_at');
             $table->timestamps();
             $table->softDeletes();
         });

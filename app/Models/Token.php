@@ -23,12 +23,14 @@ class Token extends Model
         'user_id',
         'type',
         'token',
+        'expires_at'
     ];
 
     /**
      * @var array
      */
     protected $dates = [
+        'expires_at',
         'created_at',
         'updated_at',
         'deleted_at',
