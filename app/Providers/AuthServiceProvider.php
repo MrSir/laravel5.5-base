@@ -10,6 +10,9 @@ use App\Policies\ElementPolicy;
 use App\Policies\PagePolicy;
 use App\Policies\SitePolicy;
 use App\Policies\UserPolicy;
+use App\Services\AuthGuard;
+use Illuminate\Hashing\BcryptHasher;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -32,6 +35,28 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        //
+
+        Auth::provider(
+            'users.weebly',
+            function () {
+                return new UserProvider(
+                    new BcryptHasher(),
+                    new User()
+                );
+            }
+        );
+
+        Auth::extend(
+            'auth.weebly',
+            function () {
+                return new AuthGuard(
+                    new UserProvider(
+                        new BcryptHasher(),
+                        new User()
+                    ),
+                    $this->app['request']
+                );
+            }
+        );
     }
 }

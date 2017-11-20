@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Site;
 
+use App\Models\Site;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -16,8 +17,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return true;
-        //TODO
+        return policy(Site::class)->index($this->user());
     }
 
     /**

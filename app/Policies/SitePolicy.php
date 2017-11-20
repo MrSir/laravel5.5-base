@@ -11,6 +11,17 @@ class SitePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the list of sites.
+     *
+     * @param  User  $user
+     * @return mixed
+     */
+    public function index(User $user)
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can view the site.
      *
      * @param  User  $user
