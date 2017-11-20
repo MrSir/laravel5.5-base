@@ -2,7 +2,7 @@
 
 namespace App\Pipes\Element\Store;
 
-use App\Exceptions\Element\Store\Create as ExceptionCreate;
+use App\Exceptions\Element\Store\CreateAttributes as ExceptionCreateAttributes;
 use App\Models\Element;
 use App\Passables\Element\Store;
 use App\Pipes\Pipe;
@@ -20,7 +20,7 @@ class CreateAttributes extends Pipe
      */
     public function __construct()
     {
-        parent::__construct(ExceptionCreate::class);
+        parent::__construct(ExceptionCreateAttributes::class);
     }
 
     /**
@@ -28,7 +28,7 @@ class CreateAttributes extends Pipe
      * @param Closure $next
      *
      * @return mixed
-     * @throws ExceptionCreate
+     * @throws ExceptionCreateAttributes
      */
     public function handle(Store &$passable, Closure $next)
     {

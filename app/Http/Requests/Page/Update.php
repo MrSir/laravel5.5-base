@@ -30,7 +30,9 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'order' => 'sometimes|integer|min:0',
+            'name' => 'sometimes|string|max:255',
+            'urlSlug' => 'required|string|unique:pages,url_slug,NULL,id,site_id,'.$this->route('page')->site_id,
         ];
     }
 }

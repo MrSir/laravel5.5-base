@@ -30,7 +30,9 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'isPublished' => 'sometimes|boolean',
+            'title' => 'sometimes|string|max:255',
+            'url' => 'sometimes|string|max:255',
         ];
     }
 }

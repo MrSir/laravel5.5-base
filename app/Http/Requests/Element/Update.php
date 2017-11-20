@@ -30,7 +30,13 @@ class Update extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'order' => 'sometimes|integer|min:0',
+            'type' => 'sometimes|string|max:255',
+            'content' => 'sometimes|string|max:255',
+            'attributes' => 'sometimes|array',
+            'attribtues.*.id' => 'sometimes|integer|exists:element_attributes,id',
+            'attribtues.*.key' => 'required_with:attributes|string|max:255',
+            'attribtues.*.value' => 'required_with:attributes|string|max:255',
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Pipelines\Site;
 
 use App\Passables\Site\Update as PassableUpdate;
 use App\Pipelines\Pipeline;
+use App\Pipes\Site\Update\Translate;
 use App\Pipes\Site\Update\Update as PipeUpdate;
 use App\Pipes\Site\Update\Format;
 
@@ -40,7 +41,7 @@ class Update extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
+                    Translate::class,
                     PipeUpdate::class,
                     Format::class,
                 ]

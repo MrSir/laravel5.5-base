@@ -4,8 +4,10 @@ namespace App\Pipelines\Element;
 
 use App\Passables\Element\Update as PassableUpdate;
 use App\Pipelines\Pipeline;
+use App\Pipes\Element\Update\Translate;
 use App\Pipes\Element\Update\Update as PipeUpdate;
 use App\Pipes\Element\Update\Format;
+use App\Pipes\Element\Update\UpdateAttributes;
 
 /**
  * Class Update
@@ -40,9 +42,9 @@ class Update extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
+                    Translate::class,
                     PipeUpdate::class,
-                    //TODO add update attributes
+                    UpdateAttributes::class,
                     Format::class,
                 ]
             )

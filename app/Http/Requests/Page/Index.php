@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Page;
 
+use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 
@@ -17,8 +18,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return true;
-        //TODO
+        return policy(Page::class)->index($this->user());
     }
 
     /**

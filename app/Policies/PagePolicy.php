@@ -11,6 +11,17 @@ class PagePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can view the list of pages.
+     *
+     * @param  User  $user
+     * @return mixed
+     */
+    public function index(User $user)
+    {
+        return true;
+    }
+
+    /**
      * Determine whether the user can view the page.
      *
      * @param  User  $user
