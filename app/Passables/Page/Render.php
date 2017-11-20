@@ -17,6 +17,11 @@ class Render extends Base
     protected $model;
 
     /**
+     * @var bool
+     */
+    protected $isPublished;
+
+    /**
      * @return Model
      */
     public function getModel()
@@ -30,5 +35,21 @@ class Render extends Base
     public function setModel($model)
     {
         $this->model = $model;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPublished(): bool
+    {
+        return $this->isPublished;
+    }
+
+    /**
+     * @param bool $isPublished
+     */
+    public function setIsPublished(bool $isPublished)
+    {
+        $this->isPublished = $isPublished;
     }
 }

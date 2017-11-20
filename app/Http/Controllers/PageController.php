@@ -130,9 +130,7 @@ class PageController extends Controller
         // flush the pipe
         $result = $pipeline->flush();
 
-        // handle the response
-        return response()
-            ->json($result)
-            ->setStatusCode(200);
+        return response($result['view'])
+            ->setStatusCode($result['code']);
     }
 }

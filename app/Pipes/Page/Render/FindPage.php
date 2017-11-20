@@ -41,6 +41,8 @@ class FindPage extends Pipe
             $site = Site::whereUrl($parsedURL['host'])
                 ->first();
 
+            $passable->setIsPublished($site->is_published);
+
             $page = $site->pages()
                 ->where(
                     'url_slug',

@@ -63,4 +63,13 @@ class Page extends Model
     {
         return $this->hasMany(Element::class);
     }
+
+    /**
+     * This function computes the url for he page
+     * @return string
+     */
+    public function computeUrl()
+    {
+        return urlencode("http://{$this->site->url}/{$this->url_slug}");
+    }
 }
