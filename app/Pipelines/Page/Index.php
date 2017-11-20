@@ -11,7 +11,7 @@ use App\Pipes\Page\Index\Sort;
 
 /**
  * Class Index
- * @package App\Pipelines\Account
+ * @package App\Pipelines\Page
  */
 class Index extends Pipeline
 {

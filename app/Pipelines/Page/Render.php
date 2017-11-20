@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Pipelines\Site;
+namespace App\Pipelines\Page;
 
-use App\Passables\Site\Index as PassableIndex;
+use App\Passables\Page\Render as PassableRender;
 use App\Pipelines\Pipeline;
-use App\Pipes\Site\Index\Format;
-use App\Pipes\Site\Index\Paginate;
-use App\Pipes\Site\Index\Search;
-use App\Pipes\Site\Index\Sort;
+use App\Pipes\Page\Render\FindPage;
+use App\Pipes\Page\Render\RenderPage;
 
 /**
- * Class Index
- * @package App\Pipelines\Site
+ * Class Render
+ * @package App\Pipelines\Page
  */
-class Index extends Pipeline
+class Render extends Pipeline
 {
     /**
      * This is the fill function, it initializes the pipeline
@@ -24,7 +22,7 @@ class Index extends Pipeline
      */
     public function fill($request)
     {
-        $passable = new PassableIndex();
+        $passable = new PassableRender();
         $passable->setRequest($request);
         $this->setPassable($passable);
 
@@ -33,21 +31,19 @@ class Index extends Pipeline
 
     /**
      * This is the flush function, it executes the entire pipe
-     * @return PassableIndex
+     * @return PassableRender
      */
     public function flush()
     {
         return $this->send($this->getPassable())
             ->through(
                 [
-                    Search::class,
-                    Sort::class,
-                    Paginate::class,
-                    Format::class,
+                    FindPage::class,
+                    RenderPage::class,
                 ]
             )
             ->then(
-                function (PassableIndex $passable) {
+                function (PassableRender $passable) {
                     return $passable->getResponse();
                 }
             );

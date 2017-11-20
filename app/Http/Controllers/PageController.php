@@ -6,11 +6,13 @@ use App\Http\Requests\Page\Index as RequestIndex;
 use App\Http\Requests\Page\Store as RequestStore;
 use App\Http\Requests\Page\Update as RequestUpdate;
 use App\Http\Requests\Page\Destroy as RequestDestroy;
+use App\Http\Requests\Page\Render as RequestRender;
 use App\Models\Page;
 use App\Pipelines\Page\Index;
 use App\Pipelines\Page\Store;
 use App\Pipelines\Page\Update;
 use App\Pipelines\Page\Destroy;
+use App\Pipelines\Page\Render;
 use Illuminate\Http\JsonResponse;
 
 /**
@@ -110,5 +112,27 @@ class PageController extends Controller
         return response()
             ->json($result)
             ->setStatusCode($result['code']);
+    }
+
+    /**
+     * Render a given page.
+     *
+     * @param RequestRender $request
+     *
+     * @return JsonResponse
+     */
+    public function render(RequestRender $request)
+    {
+        // instantiate the pipeline
+        $pipeline = new Render();
+        $pipeline->fill($request);
+
+        // flush the pipe
+        $result = $pipeline->flush();
+
+        // handle the response
+        return response()
+            ->json($result)
+            ->setStatusCode(200);
     }
 }

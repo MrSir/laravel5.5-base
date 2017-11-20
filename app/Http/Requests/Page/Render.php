@@ -2,15 +2,13 @@
 
 namespace App\Http\Requests\Page;
 
-use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Response;
 
 /**
- * Class Index
+ * Class Render
  * @package App\Http\Requests\Page
  */
-class Index extends FormRequest
+class Render extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +16,7 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return policy(Page::class)->index($this->user());
+        return true;
     }
 
     /**
@@ -28,13 +26,7 @@ class Index extends FormRequest
     public function rules()
     {
         return [
-            'siteId' => 'required|integer|exists:sites,id',
-            'createdAtFrom' => 'date',
-            'createdAtTo' => 'date',
-            'perPage' => 'integer',
-            'page' => 'integer',
-            'orderColumn' => 'string',
-            'orderDirection' => 'string',
+            'url' => 'required|string',
         ];
     }
 

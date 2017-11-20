@@ -32,6 +32,11 @@ Route::resource(
     ]
 );
 
+Route::get(
+    '/page/render',
+    'PageController@render'
+);
+
 Route::group(
     ['middleware' => 'auth'],
     function () {

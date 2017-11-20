@@ -30,8 +30,6 @@ abstract class Create extends Pipe
             $newModel->save();
             $passable->setModel($newModel);
         } catch (Throwable $e) {
-
-            dd($e->getMessage());
             $exceptionType = $this->getExceptionType();
             throw new $exceptionType($e);
         }
