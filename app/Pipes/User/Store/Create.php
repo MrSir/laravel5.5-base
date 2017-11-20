@@ -46,6 +46,7 @@ class Create extends StoreCreate
             // add the token
             $tokenValue = uniqid('token_', true);
             $service = 'app-token';
+            $tokenExpiresAt = Carbon::now()->addMinutes(15);
 
             $request = $passable->getRequest();
 
@@ -57,10 +58,16 @@ class Create extends StoreCreate
                 $service = $request->get('service');
             }
 
+            if ($request->has('expiresIn')) {
+                $tokenExpiresAt = Carbon::now()
+                    ->addSeconds($request->get('expiresIn'));
+            }
+
             $token = Token::make(
                 [
                     'token' => $tokenValue,
                     'type' => $service,
+                    'expires_at' => $tokenExpiresAt,
                 ]
             );
 

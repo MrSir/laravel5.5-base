@@ -7,6 +7,7 @@ use App\Models\Site;
 use App\Passables\Site\Index;
 use App\Pipes\Index\Search as IndexSearch;
 use Closure;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 /**
@@ -37,6 +38,12 @@ class Search extends IndexSearch
             $this->buildQuery($passable);
             $query = $passable->getQuery();
             $request = $passable->getRequest();
+
+            // add filtering for just the authenticated user.
+            $user = Auth::user();
+            $query->whereUserId($user->id);
+
+            // add title filter
             if ($request->has('title')) {
                 $query->where(
                     'title',
@@ -44,6 +51,8 @@ class Search extends IndexSearch
                     '%' . $request->get('title') . '%'
                 );
             }
+
+            // add is published filter
             if ($request->has('isPublished')) {
                 $query->where(
                     'is_published',
@@ -51,6 +60,7 @@ class Search extends IndexSearch
                      $request->get('isPublished')
                 );
             }
+
             $passable->setQuery($query);
         } catch (Throwable $e) {
             $exceptionType = $this->getExceptionType();
