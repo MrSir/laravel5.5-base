@@ -17,7 +17,10 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return policy(Page::class)->create($this->user());
+        return policy(Page::class)->create(
+            $this->user(),
+            $this->input('siteId')
+        );
     }
 
     /**
@@ -30,7 +33,7 @@ class Store extends FormRequest
             'siteId' => 'required|integer|exists:sites,id',
             'order' => 'required|integer|min:0',
             'name' => 'required|string|max:255',
-            'urlSlug' => 'required|string|unique:pages,url_slug,NULL,id,site_id,'.$this->get('siteId'),
+            'urlSlug' => 'required|string|unique:pages,url_slug,NULL,id,site_id,' . $this->get('siteId'),
         ];
     }
 }

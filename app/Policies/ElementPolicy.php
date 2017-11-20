@@ -2,62 +2,72 @@
 
 namespace App\Policies;
 
-use App\Models\User;
 use App\Models\Element;
-use Illuminate\Auth\Access\HandlesAuthorization;
+use App\Models\Page;
+use App\Models\User;
 
 class ElementPolicy
 {
-    use HandlesAuthorization;
-
-    /**
-     * Determine whether the user can view the element.
-     *
-     * @param  User  $user
-     * @param  Element  $element
-     * @return mixed
-     */
-    public function view(User $user, Element $element)
-    {
-        return true;
-        //TODO implement
-    }
-
     /**
      * Determine whether the user can create elements.
      *
-     * @param  User  $user
+     * @param User $user
+     * @param int  $pageId
+     *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, int $pageId)
     {
-        return true;
-        //TODO implement
+        $page = Page::find($pageId);
+
+        if ($page) {
+            if ($page->site->user_id == $user->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can update the element.
      *
-     * @param  User  $user
-     * @param  Element  $element
+     * @param User    $user
+     * @param Element $element
+     *
      * @return mixed
      */
     public function update(User $user, Element $element)
     {
-        return true;
-        //TODO implement
+        $page = $element->page;
+
+        if ($page) {
+            if ($page->site->user_id == $user->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can delete the element.
      *
-     * @param  User  $user
-     * @param  Element  $element
+     * @param User    $user
+     * @param Element $element
+     *
      * @return mixed
      */
     public function delete(User $user, Element $element)
     {
-        return true;
-        //TODO implement
+        $page = $element->page;
+
+        if ($page) {
+            if ($page->site->user_id == $user->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

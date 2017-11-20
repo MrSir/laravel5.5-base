@@ -24,11 +24,6 @@ class Index extends Pipeline
      */
     public function fill($request)
     {
-        // add the default order sort
-        if (!$request->has('orderColumn')) {
-            $request['orderColumn'] = 'order';
-        }
-
         $passable = new PassableIndex();
         $passable->setRequest($request);
         $this->setPassable($passable);

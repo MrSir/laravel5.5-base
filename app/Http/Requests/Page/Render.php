@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Page;
 
+use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -16,7 +17,7 @@ class Render extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        return policy(Page::class)->render();
     }
 
     /**

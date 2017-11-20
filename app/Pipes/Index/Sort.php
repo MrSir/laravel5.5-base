@@ -28,17 +28,21 @@ abstract class Sort extends Pipe
             $query = $passable->getQuery();
             $orderColumn = 'id';
             $orderDirection = 'asc';
+
             if ($request->has('orderColumn')) {
                 $orderColumn = $request->get('orderColumn');
             }
+
             if ($request->has('orderDirection')) {
                 $orderDirection = $request->get('orderDirection');
             }
+
             // add in the sorter
             $query->orderBy(
                 $orderColumn,
                 $orderDirection
             );
+
             $passable->setQuery($query);
         } catch (Throwable $e) {
             $exceptionType = $this->getExceptionType();

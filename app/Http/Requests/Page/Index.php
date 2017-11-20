@@ -18,7 +18,10 @@ class Index extends FormRequest
      */
     public function authorize()
     {
-        return policy(Page::class)->index($this->user());
+        return policy(Page::class)->index(
+            $this->user(),
+            $this->input('siteId')
+        );
     }
 
     /**

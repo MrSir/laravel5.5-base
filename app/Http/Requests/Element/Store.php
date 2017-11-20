@@ -17,7 +17,10 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return policy(Element::class)->create($this->user());
+        return policy(Element::class)->create(
+            $this->user(),
+            $this->input('pageId')
+        );
     }
 
     /**
