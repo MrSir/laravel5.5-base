@@ -37,18 +37,18 @@ class Search extends IndexSearch
             $this->buildQuery($passable);
             $query = $passable->getQuery();
             $request = $passable->getRequest();
-            if ($request->has('name')) {
+            if ($request->has('title')) {
                 $query->where(
-                    'name',
+                    'title',
                     'LIKE',
-                    '%' . $request->get('name') . '%'
+                    '%' . $request->get('title') . '%'
                 );
             }
-            if ($request->has('description')) {
+            if ($request->has('isPublished')) {
                 $query->where(
-                    'description',
-                    'LIKE',
-                    '%' . $request->get('description') . '%'
+                    'is_published',
+                    '=',
+                     $request->get('isPublished')
                 );
             }
             $passable->setQuery($query);

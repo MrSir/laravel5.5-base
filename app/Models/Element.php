@@ -24,6 +24,7 @@ class Element extends Model
     protected $fillable = [
         'page_id',
         'order',
+        'type',
         'content',
     ];
 
@@ -42,6 +43,7 @@ class Element extends Model
     protected $casts = [
         'page_id' => 'integer',
         'order' => 'integer',
+        'type' => 'string',
         'content' => 'string',
     ];
 

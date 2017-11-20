@@ -6,6 +6,7 @@ use App\Passables\Page\Store as PassableStore;
 use App\Pipelines\Pipeline;
 use App\Pipes\Page\Store\Create;
 use App\Pipes\Page\Store\Format;
+use App\Pipes\Page\Store\Translate;
 
 /**
  * Class Index
@@ -38,7 +39,7 @@ class Store extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
+                    Translate::class,
                     Create::class,
                     Format::class,
                 ]

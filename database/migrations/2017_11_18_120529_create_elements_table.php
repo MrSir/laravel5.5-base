@@ -17,6 +17,7 @@ class CreateElementsTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('page_id')->index('elements_page_id_foreign');
             $table->integer('order');
+            $table->string('type');
             $table->longText('content');
             $table->timestamps();
             $table->softDeletes();

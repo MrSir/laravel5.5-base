@@ -5,7 +5,9 @@ namespace App\Pipelines\Element;
 use App\Passables\Element\Store as PassableStore;
 use App\Pipelines\Pipeline;
 use App\Pipes\Element\Store\Create;
+use App\Pipes\Element\Store\CreateAttributes;
 use App\Pipes\Element\Store\Format;
+use App\Pipes\Element\Store\Translate;
 
 /**
  * Class Index
@@ -38,9 +40,9 @@ class Store extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
+                    Translate::class,
                     Create::class,
-                    //TODO add create attributes
+                    CreateAttributes::class,
                     Format::class,
                 ]
             )

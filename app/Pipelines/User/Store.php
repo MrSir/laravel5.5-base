@@ -22,8 +22,6 @@ class Store extends Pipeline
      */
     public function fill($request)
     {
-        //TODO add authenticated user id to the request params
-
         $passable = new PassableStore();
         $passable->setRequest($request);
         $this->setPassable($passable);
@@ -40,7 +38,6 @@ class Store extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
                     Create::class,
                     Format::class,
                 ]

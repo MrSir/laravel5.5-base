@@ -6,6 +6,7 @@ use App\Passables\Site\Store as PassableStore;
 use App\Pipelines\Pipeline;
 use App\Pipes\Site\Store\Create;
 use App\Pipes\Site\Store\Format;
+use App\Pipes\Site\Store\Translate;
 
 /**
  * Class Index
@@ -22,7 +23,9 @@ class Store extends Pipeline
      */
     public function fill($request)
     {
-        //TODO add authenticated user id to the request params
+        // add authenticated user id to the request params
+        $user = $request->user();
+        $request['userId'] = $user->id;
 
         $passable = new PassableStore();
         $passable->setRequest($request);
@@ -40,7 +43,7 @@ class Store extends Pipeline
         return $this->send($this->getPassable())
             ->through(
                 [
-                    //TODO add translate
+                    Translate::class,
                     Create::class,
                     Format::class,
                 ]

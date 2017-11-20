@@ -8,13 +8,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 use App\Models\Token;
 use App\Models\User;
 
+/**
+ * Class UserProvider
+ * @package App\Providers
+ */
 class UserProvider extends EloquentUserProvider
 {
-    /**
-     * @const MAX_LOGIN_ATTEMPTS signifies the max number of login attempts
-     */
-    const MAX_LOGIN_ATTEMPTS = 4;
-
     /**
      * Return the user by their ID and remember me token.
      *

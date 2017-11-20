@@ -7,10 +7,10 @@ use App\Pipes\Pipe;
 use Throwable;
 
 /**
- * Class Create
+ * Class Translate
  * @package App\Pipes\Store
  */
-abstract class Create extends Pipe
+abstract class Translate extends Pipe
 {
     /**
      * @var string
@@ -20,18 +20,17 @@ abstract class Create extends Pipe
     /**
      * @param Store $passable
      */
-    public function storeModel(Store &$passable)
+    public function translateRequest(Store &$passable)
     {
         try {
             $request = $passable->getRequest();
-            $model = $this->getModel();
-            $newModel = new $model();
-            $newModel->fill($request->all());
-            $newModel->save();
-            $passable->setModel($newModel);
-        } catch (Throwable $e) {
 
-            dd($e->getMessage());
+            foreach($request->all() as $field=>$value){
+                $request[snake_case($field)] = $value;
+            }
+
+            $passable->setRequest($request);
+        } catch (Throwable $e) {
             $exceptionType = $this->getExceptionType();
             throw new $exceptionType($e);
         }

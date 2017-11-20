@@ -27,7 +27,13 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'pageId' => 'required|integer|exists:pages,id',
+            'order' => 'required|integer|min:0',
+            'type' => 'required|string|max:255',
+            'content' => 'required|string|max:255',
+            'attributes' => 'sometimes|array',
+            'attribtues.*.key' => 'required_with:attributes|string|max:255',
+            'attribtues.*.value' => 'required_with:attributes|string|max:255',
         ];
     }
 }

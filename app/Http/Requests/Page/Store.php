@@ -27,7 +27,10 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'siteId' => 'required|integer|exists:sites,id',
+            'order' => 'required|integer|min:0',
+            'name' => 'required|string|max:255',
+            'urlSlug' => 'required|string|unique:pages,url_slug,NULL,id,site_id,'.$this->get('siteId'),
         ];
     }
 }

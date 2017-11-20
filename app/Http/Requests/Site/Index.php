@@ -27,8 +27,8 @@ class Index extends FormRequest
     public function rules()
     {
         return [
-            //TODO
-
+            'title' => 'string|max:255',
+            'isPublished' => 'boolean',
             'createdAtFrom' => 'date',
             'createdAtTo' => 'date',
             'perPage' => 'integer',

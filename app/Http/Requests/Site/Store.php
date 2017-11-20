@@ -27,7 +27,9 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-            //TODO
+            'isPublished' => 'required|boolean',
+            'title' => 'required|string|max:255',
+            'url' => 'required|string|max:255',
         ];
     }
 }
